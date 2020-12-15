@@ -2,6 +2,7 @@
 #include <math.h>
 #include <pthread.h>
 #include <unistd.h>
+#include <climits>
 #include "functions.h"
 
 
@@ -31,6 +32,98 @@ long long suma_elem(int tab[], int rozmiar) {
     }
     return suma;
 }
+//k-ty bit liczby template
+ template <typename T>
+ int bit(int k, T n) {
+    return ((1LL << k) & n) != 0;
+}
+
+
+int byte(int k, double x) {
+    void * wsk_double = &x; char * wsk_char = static_cast<char *>(wsk_double);
+    return *(wsk_char + k); }
+
+template <typename T>
+void print_bits(T t) {
+    for(int k = 0; k < sizeof(T)*8; ++k) {
+    cout << bit(k, t);
+    }
+}
+
+template <> void print_bits<double>(double t) {
+    for(int k = 0; k < sizeof(double); ++k) {
+        cout << byte(k, t) << " ";
+    }
+}
+
+int ord(ull p, ull n) {
+    ull wynik = 0;
+    while(n % p == 0) {
+     ++wynik; n /= p;
+     } r
+     return wynik;
+}
+
+template <typename T>
+ull power(ull a, T k) {
+    int N = sizeof(T) * 8;
+    ull wynik = 1;
+    for(int i = N - 1; i >= 0; --i) {
+        wynik *= wynik; if(bit(i, k) == 1) wynik *= a;
+    } return wynik;
+}
+
+template <typename T>
+ull powermod(ull a, T k, ull m) {
+    int N = sizeof(T) * 8;
+    a %= m; ull wynik = 1;
+
+    for(int i = N - 1; i >= 0; --i) {
+        wynik = (wynik * wynik) % m;
+        if(bit(i, k) == 1) wynik = (wynik * a) % m;
+    }
+    return wynik;
+}
+
+double drand(void) {
+    double d = rand()/(double) RAND_MAX;
+    return d;
+}
+
+ull random_range(ull pocz, ull kon) {
+    ull k = (kon - pocz + 1) * drand() + pocz; return k;
+}
+
+bool Miller_Rabin_test(ull n) {
+    if(n == 2 || n == 3 || n == 5) return true;
+    if(n % 2 == 0 || n % 3 == 0 || n % 5 == 0 ) return false;
+    if(n <= 6) return false;
+
+    ull s = ord(2, n - 1); ull d = (n - 1) / power(2,s);
+    ull a, b, d;
+    bool probably_prime;
+    const ull test_nr = 4;
+
+    for(int i = 0; i < test_nr; ++i) {
+        do{ a = random_range(2, min((long long)n - 1, UINT_MAX));
+            if(n % a == 0) return false;
+            cout << "Wybrano do testu liczbe " << a;
+            b = powermod(a, d, n);
+        } while(b == 1);
+
+        probably_prime = false;
+        for(int j = 0; j < s; j++) {
+            if(b == n - 1) {
+                probably_prime=true;
+                break;
+            }
+            b = (b * b) % n;
+        }
+        if(probably_prime = false) return false;
+    }
+    return true;
+} //end of Mille_Rabin
+
 /*
 void *threadFunction(void * arg) {
     args * wsk = (args *) arg;

@@ -34,12 +34,17 @@ int main(int argc, char * argv[]) {
     cout << ULONG_LONG_MAX << endl;
     cout << (ull) UINT_MAX * (ull)UINT_MAX;
 
-*/
+
     test t1(1,"TRIAL DIVISORS", is_prime, &f);
     test t2(2, "TRIAL DIVISORS", is_prime, &f);
 
     t1.run();
     t1.resume();
+
+*/
+
+    cout <<Miller_Rabin_test(121);
+
 
 
 
