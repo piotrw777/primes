@@ -5,84 +5,27 @@
 #include <climits>
 #include "functions.h"
 
-
-//#include <stdio.h>
-//#include <stdlib.h>
-//#include <cstdlib>
-//#include <string.h>
 #define ull unsigned long long
 using namespace std;
 
-double drand(void) {
-    double d = rand()/(double) RAND_MAX;
-    return d;
-
-}
-
-ull random_range(ull pocz, ull kon)  {
-     ull k = (kon - pocz + 1) * drand() + pocz;
-     return k;
-}
-
-long long suma_elem(int tab[], int rozmiar) {
-    long long suma = 0;
-    int k;
-    for(k = 0; k < rozmiar; k++) {
-        suma += tab[k];
+ull nwd(ull a, ull b) {
+    ull c;
+    while(b) {
+        c = a;
+        a = b;
+        b = c % b;
     }
-    return suma;
-}
-//k-ty bit liczby template
- template <typename T>
- int bit(int k, T n) {
-    return ((1LL << k) & n) != 0;
+    return a;
 }
 
 
-int byte(int k, double x) {
-    void * wsk_double = &x; char * wsk_char = static_cast<char *>(wsk_double);
-    return *(wsk_char + k); }
-
-template <typename T>
-void print_bits(T t) {
-    for(int k = 0; k < sizeof(T)*8; ++k) {
-    cout << bit(k, t);
-    }
-}
-
-template <> void print_bits<double>(double t) {
-    for(int k = 0; k < sizeof(double); ++k) {
-        cout << byte(k, t) << " ";
-    }
-}
-
-int ord(ull p, ull n) {
+ull ord(ull p, ull n) {
     ull wynik = 0;
     while(n % p == 0) {
-     ++wynik; n /= p;
-     } r
+     ++wynik;
+     n /= p;
+     }
      return wynik;
-}
-
-template <typename T>
-ull power(ull a, T k) {
-    int N = sizeof(T) * 8;
-    ull wynik = 1;
-    for(int i = N - 1; i >= 0; --i) {
-        wynik *= wynik; if(bit(i, k) == 1) wynik *= a;
-    } return wynik;
-}
-
-template <typename T>
-ull powermod(ull a, T k, ull m) {
-    int N = sizeof(T) * 8;
-    a %= m; ull wynik = 1;
-
-    for(int i = N - 1; i >= 0; --i) {
-        wynik = (wynik * wynik) % m;
-        if(bit(i, k) == 1) wynik = (wynik * a) % m;
-    }
-    return wynik;
 }
 
 double drand(void) {
@@ -99,14 +42,15 @@ bool Miller_Rabin_test(ull n) {
     if(n % 2 == 0 || n % 3 == 0 || n % 5 == 0 ) return false;
     if(n <= 6) return false;
 
-    ull s = ord(2, n - 1); ull d = (n - 1) / power(2,s);
-    ull a, b, d;
+    ull s = ord(2, n - 1);
+    ull d = (n - 1) / power(2,s);
+    ull a, b;
     bool probably_prime;
     const ull test_nr = 4;
 
     for(int i = 0; i < test_nr; ++i) {
-        do{ a = random_range(2, min((long long)n - 1, UINT_MAX));
-            if(n % a == 0) return false;
+        do{ a = random_range(2, min((unsigned int)n - 1, UINT_MAX));
+            if(nwd(n,a) != 1) return false;
             cout << "Wybrano do testu liczbe " << a;
             b = powermod(a, d, n);
         } while(b == 1);
@@ -191,12 +135,34 @@ bool is_prime_thr(ull n) {
     if( n % 5 == 0) return false;
 
     pthread_t Threads[M]; //wątki
-    int Results[M];       //wyniki zwracane przez wątki
+    int Results[M];       //wyniki zwracane przez//k-ty bit liczby template
+ template <typename T>
+ int bit(int k, T n) {
+    return ((1LL << k) & n) != 0;
+}
+template <> int bit<double>(int k, double x) {
+    void * wsk_double = &x;
+    char * wsk_char = static_cast<char *>(wsk_double);
+    return *(wsk_char + k);
+}
+
+template <typename T>
+void print_bits(T t) {
+    for(int k = 0; k < sizeof(T)*8; ++k) {
+    cout << bit(k, t);
+    }
+}
+
+template <> void print_bits<double>(double t) {
+    for(int k = 0; k < sizeof(double); ++k) {
+        cout << bit(k, t) << " ";
+    }
+} wątki
     int Ret[M];
     memset(Results, 0, M * sizeof(* Results) );
     args Args_thr[M];  //argumenty dla wątków
 
-    int ret;
+    int ret;    cout <<Miller_Rabin_test(121);
     const int Start[M] = {13,17,7,11};
     //wypełnienie tablicy argumentów dla wątków
     for(int k = 0; k < M; k++) {

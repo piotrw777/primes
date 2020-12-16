@@ -9,7 +9,7 @@
 #include <string>
 #include <climits>
 
-#include "functions.h"
+//#include "functions.h"
 #include "class_file_read.h"
 
 using namespace std;
@@ -42,8 +42,8 @@ int main(int argc, char * argv[]) {
     t1.resume();
 
 */
-
     cout <<Miller_Rabin_test(121);
+
 
 
 

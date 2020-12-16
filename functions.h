@@ -1,10 +1,36 @@
-//functions.h
+#ifndef FUNCTIONS
+#define FUNCTIONS
 
 #include <iostream>
 #include <vector>
 
 #define ull unsigned long long
 using namespace std;
+
+//k-ty bit liczby template
+template <typename T>
+int bit(int k, T n) {
+    return ((1LL << k) & n) != 0;
+}
+
+template <> int bit<double>(int k, double x) {
+    void * wsk_double = &x;
+    char * wsk_char = static_cast<char *>(wsk_double);
+    return *(wsk_char + k);
+}
+
+template <typename T>
+void print_bits(T t) {
+    for(int k = 0; k < sizeof(T)*8; ++k) {
+        cout << bit(k, t);
+    }
+}
+
+template <> void print_bits<double>(double t) {
+    for(int k = 0; k < sizeof(double); ++k) {
+        cout << bit(k, t) << " ";
+    }
+}
 
 template <typename Typ>
 void print(const vector<Typ>& V) {
@@ -19,6 +45,26 @@ ostream & operator<<(ostream & out,const vector<Typ>& V) {
     return out;
 }
 
+template <typename T>
+ull power(ull a, T k) {
+    int N = sizeof(T) * 8;
+    ull wynik = 1;
+    for(int i = N - 1; i >= 0; --i) {
+        wynik *= wynik; if(bit(i, k) == 1) wynik *= a;
+    } return wynik;
+}
+
+template <typename T>
+ull powermod(ull a, T k, ull m) {
+    int N = sizeof(T) * 8;
+    a %= m; ull wynik = 1;
+
+    for(int i = N - 1; i >= 0; --i) {
+        wynik = (wynik * wynik) % m;
+        if(bit(i, k) == 1) wynik = (wynik * a) % m;
+    }
+    return wynik;
+}
 //funkcje testujące pierwszość
 bool is_prime(ull n);
 bool Miller_Rabin_test(ull n);
@@ -27,3 +73,6 @@ bool mpz_probab_prime(ull n);
 //funkcje pomocnicze
 ull ord(ull p, ull n);
 ull powermod(ull a, ull k, ull n);
+
+#endif // FUNCTIONS
+
