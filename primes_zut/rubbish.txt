@@ -1,0 +1,31 @@
+    cout << ULONG_LONG_MAX - N * N << endl;
+    cout << INT_MAX << endl;
+    cout << UINT_MAX << endl;
+    cout << LONG_LONG_MAX << endl;
+    cout << ULONG_LONG_MAX << endl;
+    cout << (ull) UINT_MAX * (ull)UINT_MAX;
+
+ull *pnts = v.data();
+    auto start = chrono::steady_clock::now();
+
+    // do some stuff here
+    sleep(3);
+
+    auto end = chrono::steady_clock::now();
+
+    cout << "Elapsed time in nanoseconds : "
+        << chrono::duration_cast<chrono::nanoseconds>(end - start).count()
+        << " ns" << endl;
+
+    cout << "Elapsed time in microseconds : "
+        << chrono::duration_cast<chrono::microseconds>(end - start).count()
+        << " µs" << endl;
+
+    cout << "Elapsed time in milliseconds : "
+        << chrono::duration_cast<chrono::milliseconds>(end - start).count()
+        << " ms" << endl;
+
+    cout << "Elapsed time in seconds : "
+        << chrono::duration_cast<chrono::seconds>(end - start).count()
+        << " sec";
+ 
