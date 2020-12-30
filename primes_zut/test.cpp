@@ -1,5 +1,5 @@
 #include "test.h"
-
+#include <thread>
 void test::run(int nr_thr, bool output_to_file)
 {
     int N = plik->size; // ilość wczytanych liczb
@@ -8,14 +8,43 @@ void test::run(int nr_thr, bool output_to_file)
     cout << "Rozpoczynam test " << name << endl;
 
     auto start = steady_clock::now();
-    for(const auto & i: plik->data)
+    //jeden watek
+    if(P==1)
     {
-        if(f(i))
+        for(const auto & i: plik->data)
         {
-            found_primes.push_back(i);
+            if(f(i))
+            {
+                found_primes.push_back(i);
+            }
         }
     }
+    else
+    {   //1 liczba = 1 watek (N watkow)
+        if(N <= P)
+        {
+            thread *thr = new thread[N];
+            for(int k = 0; k < N; k++)
+            {
+                //thread(function, plik->data[k] );
+            }
+            for(int k = 0; k < N; k++)
+            {
+                thr[k].join();
+            }
+        }
+        //rozdzielamy zbior liczb na watki
+        else
+        {
+            
+            
+        }
+        
+        
+        
+    }
     auto end = steady_clock::now();
+    
     time = chrono::duration_cast<chrono::milliseconds>(end - start).count();
 }
 
